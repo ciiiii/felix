@@ -419,13 +419,13 @@ func NewIntDataplaneDriver(config Config) *InternalDataplane {
 	dp.ipSets = append(dp.ipSets, ipSetsV4)
 
 	if config.RulesConfig.VXLANEnabled {
-		routeTableVXLAN := routetable.New([]string{"^vxlan.calico$"}, 4, true, config.NetlinkTimeout,
+		routeTableVXLAN := routetable.New([]string{"^vxlan.calico1$"}, 4, true, config.NetlinkTimeout,
 			config.DeviceRouteSourceAddress, config.DeviceRouteProtocol, true, 0)
 
 		vxlanManager := newVXLANManager(
 			ipSetsV4,
 			routeTableVXLAN,
-			"vxlan.calico",
+			"vxlan.calico1",
 			config,
 		)
 		go vxlanManager.KeepVXLANDeviceInSync(config.VXLANMTU, 10*time.Second)
@@ -857,7 +857,7 @@ func determinePodMTU(config Config) int {
 func cleanUpVXLANDevice() {
 	// If VXLAN is not enabled, check to see if there is a VXLAN device and delete it if there is.
 	log.Debug("Checking if we need to clean up the VXLAN device")
-	link, err := netlink.LinkByName("vxlan.calico")
+	link, err := netlink.LinkByName("vxlan.calico1")
 	if err != nil {
 		if _, ok := err.(netlink.LinkNotFoundError); ok {
 			log.Debug("VXLAN disabled and no VXLAN device found")

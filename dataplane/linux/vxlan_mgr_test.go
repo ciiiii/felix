@@ -101,7 +101,7 @@ var _ = Describe("VXLANManager", func() {
 		manager = newVXLANManagerWithShims(
 			newMockIPSets(),
 			rt,
-			"vxlan.calico",
+			"vxlan.calico1",
 			Config{
 				MaxIPSetSize:       5,
 				Hostname:           "node1",
@@ -168,12 +168,12 @@ var _ = Describe("VXLANManager", func() {
 			DstNodeIp:   "172.8.8.8",
 		})
 
-		Expect(rt.currentRoutes["vxlan.calico"]).To(HaveLen(0))
+		Expect(rt.currentRoutes["vxlan.calico1"]).To(HaveLen(0))
 
 		err = manager.CompleteDeferredWork()
 
 		Expect(err).NotTo(HaveOccurred())
-		Expect(rt.currentRoutes["vxlan.calico"]).To(HaveLen(1))
+		Expect(rt.currentRoutes["vxlan.calico1"]).To(HaveLen(1))
 		Expect(prt.currentRoutes["eth0"]).NotTo(BeNil())
 	})
 

@@ -872,7 +872,7 @@ var _ = Describe("Static", func() {
 									},
 									{
 										Match: Match().
-											OutInterface("vxlan.calico").
+											OutInterface("vxlan.calico1").
 											NotSrcAddrType(AddrTypeLocal, true).
 											SrcAddrType(AddrTypeLocal, false),
 										Action: MasqAction{},

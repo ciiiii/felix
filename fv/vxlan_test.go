@@ -71,7 +71,7 @@ var _ = infrastructure.DatastoreDescribe("VXLAN topology before adding host IPs 
 							if err != nil {
 								return err
 							}
-							if strings.Contains(out, "vxlan.calico") {
+							if strings.Contains(out, "vxlan.calico1") {
 								continue
 							}
 							return fmt.Errorf("felix %d has no vxlan device", i)
@@ -354,15 +354,15 @@ var _ = infrastructure.DatastoreDescribe("VXLAN topology before adding host IPs 
 					// which means that we should expect 1450 after subracting VXLAN overhead.
 					for _, felix := range felixes {
 						Eventually(func() string {
-							out, _ := felix.ExecOutput("ip", "-d", "link", "show", "vxlan.calico")
+							out, _ := felix.ExecOutput("ip", "-d", "link", "show", "vxlan.calico1")
 							return out
 						}, "10s", "100ms").Should(ContainSubstring("mtu 1450"))
 						Eventually(func() string {
-							out, _ := felix.ExecOutput("ip", "-d", "link", "show", "vxlan.calico")
+							out, _ := felix.ExecOutput("ip", "-d", "link", "show", "vxlan.calico1")
 							return out
 						}, "10s", "100ms").Should(ContainSubstring("vxlan id 4096"))
 						Eventually(func() string {
-							out, _ := felix.ExecOutput("ip", "-d", "link", "show", "vxlan.calico")
+							out, _ := felix.ExecOutput("ip", "-d", "link", "show", "vxlan.calico1")
 							return out
 						}, "10s", "100ms").Should(ContainSubstring("dstport 4789"))
 					}
@@ -378,7 +378,7 @@ var _ = infrastructure.DatastoreDescribe("VXLAN topology before adding host IPs 
 					// MTU should be auto-detected, and updated to the host MTU minus 50 bytes overhead.
 					for _, felix := range felixes {
 						Eventually(func() string {
-							out, _ := felix.ExecOutput("ip", "-d", "link", "show", "vxlan.calico")
+							out, _ := felix.ExecOutput("ip", "-d", "link", "show", "vxlan.calico1")
 							return out
 						}, "30s", "100ms").Should(ContainSubstring("mtu 1350"))
 
@@ -404,15 +404,15 @@ var _ = infrastructure.DatastoreDescribe("VXLAN topology before adding host IPs 
 					// Expect the settings to be changed on the device.
 					for _, felix := range felixes {
 						Eventually(func() string {
-							out, _ := felix.ExecOutput("ip", "-d", "link", "show", "vxlan.calico")
+							out, _ := felix.ExecOutput("ip", "-d", "link", "show", "vxlan.calico1")
 							return out
 						}, "30s", "100ms").Should(ContainSubstring("mtu 1300"))
 						Eventually(func() string {
-							out, _ := felix.ExecOutput("ip", "-d", "link", "show", "vxlan.calico")
+							out, _ := felix.ExecOutput("ip", "-d", "link", "show", "vxlan.calico1")
 							return out
 						}, "10s", "100ms").Should(ContainSubstring("vxlan id 4097"))
 						Eventually(func() string {
-							out, _ := felix.ExecOutput("ip", "-d", "link", "show", "vxlan.calico")
+							out, _ := felix.ExecOutput("ip", "-d", "link", "show", "vxlan.calico1")
 							return out
 						}, "10s", "100ms").Should(ContainSubstring("dstport 4790"))
 					}
@@ -423,7 +423,7 @@ var _ = infrastructure.DatastoreDescribe("VXLAN topology before adding host IPs 
 					// Wait for the VXLAN device to be created.
 					for _, felix := range felixes {
 						Eventually(func() string {
-							out, _ := felix.ExecOutput("ip", "-d", "link", "show", "vxlan.calico")
+							out, _ := felix.ExecOutput("ip", "-d", "link", "show", "vxlan.calico1")
 							return out
 						}, "10s", "100ms").Should(ContainSubstring("mtu 1450"))
 					}
@@ -439,7 +439,7 @@ var _ = infrastructure.DatastoreDescribe("VXLAN topology before adding host IPs 
 					// Expect the VXLAN device to be deleted.
 					for _, felix := range felixes {
 						Eventually(func() string {
-							out, _ := felix.ExecOutput("ip", "-d", "link", "show", "vxlan.calico")
+							out, _ := felix.ExecOutput("ip", "-d", "link", "show", "vxlan.calico1")
 							return out
 						}, "10s", "100ms").ShouldNot(ContainSubstring("mtu 1450"))
 					}
