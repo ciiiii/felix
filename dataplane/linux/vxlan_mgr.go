@@ -421,6 +421,9 @@ func (m *vxlanManager) configureVXLANDevice(mtu int, localVTEP *proto.VXLANTunne
 
 	// Try to get the device.
 	link, err := m.nlHandle.LinkByName(m.vxlanDevice)
+	fmt.Printf("#####%d %d %s\n", m.vxlanID, m.vxlanPort, ip.FromString(localVTEP.ParentDeviceIp).AsNetIP())
+	fmt.Printf("#####%v\n", link)
+	fmt.Printf("#####%v\n", err)
 	if err != nil {
 		logrus.WithError(err).Info("Failed to get VXLAN tunnel device, assuming it isn't present")
 		if err := m.nlHandle.LinkAdd(vxlan); err == syscall.EEXIST {
